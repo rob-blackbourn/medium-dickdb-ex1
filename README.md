@@ -52,33 +52,3 @@ Remove the unreferenced file `app.css`.
 ```bash
 npm install @opendatasoft/api-client
 ```
-
-https://public.opendatasoft.com/explore/dataset/geonames-all-cities-with-a-population-1000/table/?disjunctive.cou_name_en&sort=name
-https://public.opendatasoft.com/explore/dataset/geonames-all-cities-with-a-population-1000
-
-
-WITH x AS (
-  SELECT
-    RANK() OVER (PARTITION BY country ORDER BY population DESC) as rank,
-    country,
-    name,
-    population
-  FROM
-    city
-  GROUP BY
-    country,
-    name,
-    population
-)
-SELECT
-  *
-FROM
-  x
-WHERE
-  rank <= 3
-AND
-  population > 1000000
-ORDER BY
-  country,
-  name,
-  population DESC
