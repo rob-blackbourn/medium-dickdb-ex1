@@ -10,7 +10,7 @@ import { DataTable, Column } from '@jetblack/material-data-table'
 
 import SubmitForm from '../components/SubmitForm'
 
-import { arrowRowGenerator } from '../duckdbUtils'
+import { sqlDbJson } from '../duckdbUtils'
 
 const formatPopulation = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 0
@@ -34,35 +34,36 @@ export default function LargeCityByCountry() {
     }
 
     const loadAsync = async () => {
-      const connection = await db.connect()
-      const results = await connection.query(`
-      WITH x AS (
+      const cities = await sqlDbJson<City>(
+        `
+        WITH x AS (
+          SELECT
+            RANK() OVER (PARTITION BY country ORDER BY population DESC) as rank,
+            country,
+            name,
+            population
+          FROM
+            city
+          GROUP BY
+            country,
+            name,
+            population
+        )
         SELECT
-          RANK() OVER (PARTITION BY country ORDER BY population DESC) as rank,
-          country,
-          name,
-          population
+          *
         FROM
-          city
-        GROUP BY
+          x
+        WHERE
+          rank <= ${maxCities}
+        AND
+          population > ${minPopulation}
+        ORDER BY
           country,
           name,
-          population
+          population DESC
+      `,
+        db
       )
-      SELECT
-        *
-      FROM
-        x
-      WHERE
-        rank <= ${maxCities}
-      AND
-        population > ${minPopulation}
-      ORDER BY
-        country,
-        name,
-        population DESC
-      `)
-      const cities = Array.from<City>(arrowRowGenerator<City>(results))
       return cities
     }
 

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { DataTable, Column } from '@jetblack/material-data-table'
 
-import { arrowRowGenerator } from '../duckdbUtils'
+import { sqlDbJson } from '../duckdbUtils'
 
 const formatPopulation = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 0
@@ -24,8 +24,8 @@ export default function TwentyLargestCities() {
     }
 
     const loadAsync = async () => {
-      const connection = await db.connect()
-      const results = await connection.query(`
+      const cities = sqlDbJson<BigCity>(
+        `
       SELECT
         name, population
       FROM
@@ -34,8 +34,9 @@ export default function TwentyLargestCities() {
         population DESC
       FETCH
         FIRST 20 ROWS ONLY
-      `)
-      const cities = Array.from<BigCity>(arrowRowGenerator<BigCity>(results))
+      `,
+        db
+      )
       return cities
     }
 

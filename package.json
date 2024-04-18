@@ -10,21 +10,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@apache-arrow/ts": "^15.0.0",
-    "@duckdb/duckdb-wasm-shell": "^1.28.1-dev106.0",
+    "@duckdb/duckdb-wasm": "1.28.1-dev179.0",
+    "@duckdb/duckdb-wasm-shell": "1.28.1-dev179.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@fontsource/material-icons": "^5.0.13",
     "@fontsource/roboto": "^5.0.8",
     "@jetblack/duckdb-react": "^0.2.0",
     "@jetblack/material-data-table": "^6.0.1",
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
-    "@mui/x-date-pickers": "^6.19.4",
     "@opendatasoft/api-client": "^21.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.50.1",
-    "react-hook-form-mui": "^7.0.0-beta.0",
+    "react-hook-form": "^7.51.3",
+    "react-hook-form-mui": "^7.0.0-beta.4",
     "react-router-dom": "^6.22.1"
   },
   "devDependencies": {
